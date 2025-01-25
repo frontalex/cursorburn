@@ -223,14 +223,12 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // Только левая кнопка мыши (0)
       if (e.button !== 0) return;
       pressStartRef.current = Date.now();
       targetIntensityRef.current = maxIntensity;
     };
 
     const handleMouseUp = (e: MouseEvent) => {
-      // Только левая кнопка мыши (0)
       if (e.button !== 0) return;
       pressStartRef.current = null;
       targetIntensityRef.current = 1;
@@ -297,7 +295,7 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
       animationRef.current = requestAnimationFrame(render);
     };
 
-    // Add event listeners to document instead of canvas
+    // Add event listeners to document
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
@@ -327,12 +325,13 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
   const wrapperStyle = {
     ...styles.wrapper,
     background,
-    ...style
+    ...style,
+    cursor: showSystemCursor ? 'default' : 'none'
   };
 
   const canvasStyle = {
     ...styles.canvas,
-    cursor: showSystemCursor ? 'default' : 'none',
+    pointerEvents: 'none' as const // Canvas всегда пропускает события мыши
   };
 
   return (
