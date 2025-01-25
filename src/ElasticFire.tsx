@@ -22,6 +22,7 @@ interface ElasticFireProps {
   // Настройки курсора
   radius?: number;
   cursorColor?: string;
+  showSystemCursor?: boolean; // Показывать ли системный курсор
 
   // Настройки анимации
   speed?: number;
@@ -58,7 +59,6 @@ const styles = {
     height: '100%',
     position: 'relative' as const,
     overflow: 'hidden',
-    // background: 'black'
   },
   canvas: {
     cursor: 'none',
@@ -68,7 +68,11 @@ const styles = {
     top: 0,
     left: 0,
     WebkitFilter: 'url("#goo")',
-    filter: 'url("#goo")'
+    filter: 'url("#goo")',
+    userSelect: 'none' as const,
+    WebkitUserSelect: 'none' as const,
+    WebkitTouchCallout: 'none' as const,
+    pointerEvents: 'none' as const,
   },
   svg: {
     position: 'absolute' as const,
@@ -135,6 +139,7 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
   // Настройки курсора
   radius = 12,
   cursorColor = "white",
+  showSystemCursor = false,
 
   // Настройки анимации
   speed = 0.5,
@@ -168,6 +173,14 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Prevent context menu
+    const handleContextMenu = (e: Event) => {
+      e.preventDefault();
+    };
+
+    // Add context menu prevention
+    canvas.addEventListener('contextmenu', handleContextMenu);
 
     // Set initial canvas size
     const w = canvas.width = width || window.innerWidth * 2;
@@ -209,12 +222,16 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
       };
     };
 
-    const handleMouseDown = () => {
+    const handleMouseDown = (e: MouseEvent) => {
+      // Только левая кнопка мыши (0)
+      if (e.button !== 0) return;
       pressStartRef.current = Date.now();
       targetIntensityRef.current = maxIntensity;
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: MouseEvent) => {
+      // Только левая кнопка мыши (0)
+      if (e.button !== 0) return;
       pressStartRef.current = null;
       targetIntensityRef.current = 1;
     };
@@ -280,10 +297,10 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
       animationRef.current = requestAnimationFrame(render);
     };
 
-    // Add event listeners
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    // Add event listeners to document instead of canvas
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
 
     // Start animation
     render();
@@ -293,9 +310,9 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
       particlesRef.current = [];
     };
   }, [
@@ -313,11 +330,16 @@ export const ElasticFire: React.FC<ElasticFireProps> = ({
     ...style
   };
 
+  const canvasStyle = {
+    ...styles.canvas,
+    cursor: showSystemCursor ? 'default' : 'none',
+  };
+
   return (
     <div style={wrapperStyle} className={className}>
       <canvas
         ref={canvasRef}
-        style={styles.canvas}
+        style={canvasStyle}
       />
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={styles.svg}>
         <defs>
