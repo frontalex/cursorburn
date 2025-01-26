@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [react()],
   base: '/cursorburn/',
   build: {
-    outDir: 'demo'
+    outDir: 'docs'
   }
 });
