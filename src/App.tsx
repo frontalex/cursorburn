@@ -334,7 +334,16 @@ const App: React.FC = () => {
           return (
             <button
               key={key}
-              onClick={() => setCurrentPreset(key)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentPreset(key);
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentPreset(key);
+              }}
               className={`button ${currentPreset === key ? 'active' : ''}`}
             >
               {preset.name}
