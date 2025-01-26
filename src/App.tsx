@@ -202,22 +202,35 @@ const styles = {
     WebkitFontSmoothing: 'antialiased',
     MozOsxFontSmoothing: 'grayscale',
   },
-  header: {
+  topBar: {
     position: 'absolute' as const,
-    top: '20px',
+    top: 0,
     left: 0,
     right: 0,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px 20px',
     zIndex: 2,
+    background: 'rgba(0,0,0,0.2)',
+    backdropFilter: 'blur(10px)',
+  },
+  header: {
+    position: 'absolute' as const,
+    top: '60px',
+    left: 0,
+    right: 0,
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
     padding: '0 20px',
+    zIndex: 2,
   },
   title: {
     color: 'white',
     textAlign: 'center' as const,
-    fontSize: 'clamp(24px, 5vw, 36px)',
-    letterSpacing: '3px',
+    fontSize: 'clamp(20px, 4vw, 36px)',
+    letterSpacing: '2px',
     textTransform: 'uppercase' as const,
     textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.2)',
     margin: '0 0 10px 0',
@@ -226,17 +239,17 @@ const styles = {
   subtitle: {
     color: 'rgba(255,255,255,0.8)',
     textAlign: 'center' as const,
-    fontSize: 'clamp(14px, 3vw, 18px)',
+    fontSize: 'clamp(12px, 2.5vw, 16px)',
     maxWidth: '800px',
     lineHeight: 1.5,
     margin: '0 0 10px 0',
   },
   currentPreset: {
     color: 'rgba(255,255,255,0.6)',
-    fontSize: 'clamp(12px, 2.5vw, 16px)',
+    fontSize: 'clamp(10px, 2vw, 14px)',
     textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
-    marginTop: '20px',
+    letterSpacing: '1px',
+    marginTop: '10px',
   },
   buttonsContainer: {
     position: 'absolute' as const,
@@ -251,6 +264,11 @@ const styles = {
     width: '100%',
     padding: '20px',
     zIndex: 3,
+    '@media (max-width: 768px)': {
+      bottom: '20px',
+      padding: '10px',
+      gap: '5px'
+    }
   }
 };
 
@@ -270,6 +288,28 @@ const App: React.FC = () => {
 
   return (
     <div style={containerStyle}>
+      <div style={styles.topBar}>
+        <button
+          onClick={() => setShowSystemCursor(prev => !prev)}
+          className="toggleButton"
+        >
+          <div className={`checkbox ${showSystemCursor ? 'checked' : ''}`} />
+          System Cursor
+        </button>
+
+        <a
+          href="https://github.com/frontalex/cursorburn"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="githubLink"
+        >
+          <svg height="20" width="20" viewBox="0 0 16 16" fill="white">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+
       <div style={styles.header}>
         <h1 style={styles.title}>
           Cursor Burn
@@ -283,26 +323,6 @@ const App: React.FC = () => {
           {showSystemCursor ? ' (System Cursor)' : ' (Custom Cursor)'}
         </div>
       </div>
-
-      <button
-        onClick={() => setShowSystemCursor(prev => !prev)}
-        className="toggleButton"
-      >
-        <div className={`checkbox ${showSystemCursor ? 'checked' : ''}`} />
-        System Cursor
-      </button>
-
-      <a
-        href="https://github.com/frontalex/cursorburn"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="githubLink"
-      >
-        <svg height="20" width="20" viewBox="0 0 16 16" fill="white">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        View on GitHub
-      </a>
 
       <CursorBurn
         {...currentPresetConfig}

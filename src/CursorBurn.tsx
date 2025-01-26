@@ -212,24 +212,46 @@ const CursorBurn: React.FC<CursorBurnProps> = ({
     }
 
     // Mouse handlers
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+      if (e instanceof TouchEvent) {
+        e.preventDefault(); // Предотвращаем прокрутку
+      }
+
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
+
+      let clientX, clientY;
+      if (e instanceof MouseEvent) {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      } else {
+        const touch = e.touches[0];
+        if (!touch) return;
+        clientX = touch.clientX;
+        clientY = touch.clientY;
+      }
+
       posRef.current = {
-        x: (e.clientX - rect.left) * scaleX,
-        y: (e.clientY - rect.top) * scaleY
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
       };
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      if (e.button !== 0) return;
+    const handleStart = (e: MouseEvent | TouchEvent) => {
+      if (e instanceof TouchEvent) {
+        e.preventDefault(); // Предотвращаем прокрутку
+      }
+      if (e instanceof MouseEvent && e.button !== 0) return;
       pressStartRef.current = Date.now();
       targetIntensityRef.current = maxIntensity;
     };
 
-    const handleMouseUp = (e: MouseEvent) => {
-      if (e.button !== 0) return;
+    const handleEnd = (e: MouseEvent | TouchEvent) => {
+      if (e instanceof TouchEvent) {
+        e.preventDefault(); // Предотвращаем прокрутку
+      }
+      if (e instanceof MouseEvent && e.button !== 0) return;
       pressStartRef.current = null;
       targetIntensityRef.current = 1;
     };
@@ -297,8 +319,16 @@ const CursorBurn: React.FC<CursorBurnProps> = ({
 
     // Add event listeners to document
     document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousedown', handleStart);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchstart', handleStart);
+    document.addEventListener('touchend', handleEnd);
+    document.addEventListener('touchmove', handleMouseMove);
+
+    // Prevent default touch behavior
+    canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    canvas.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
 
     // Start animation
     render();
@@ -309,8 +339,11 @@ const CursorBurn: React.FC<CursorBurnProps> = ({
         cancelAnimationFrame(animationRef.current);
       }
       document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousedown', handleStart);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchstart', handleStart);
+      document.removeEventListener('touchend', handleEnd);
+      document.removeEventListener('touchmove', handleMouseMove);
       particlesRef.current = [];
     };
   }, [

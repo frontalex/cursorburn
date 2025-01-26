@@ -1,7 +1,32 @@
 .button, .toggleButton, .githubLink {
   cursor: pointer !important;
   z-index: 10;
-  position: relative;
+}
+
+.toggleButton, .githubLink {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  color: white;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.toggleButton {
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.githubLink {
+  text-decoration: none;
+}
+
+.toggleButton:hover, .githubLink:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
 }
 
 .button {
@@ -29,50 +54,6 @@
   background: rgba(255,255,255,0.2);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.githubLink {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 20px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.githubLink:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
-}
-
-.toggleButton {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: white;
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.1);
-  border: 2px solid rgba(255,255,255,0.2);
-  border-radius: 20px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  user-select: none;
-  cursor: pointer !important;
-}
-
-.toggleButton:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
 }
 
 .checkbox {
@@ -122,9 +103,59 @@
   border-right: 2px solid white;
 }
 
-@media screen and (max-height: 600px) {
+@media screen and (max-width: 768px) {
+  .button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   .buttonsContainer {
     bottom: 20px;
     padding: 10px;
+    gap: 5px;
+  }
+
+  .toggleButton, .githubLink {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .checkbox {
+    width: 16px;
+    height: 16px;
+  }
+
+  .checkbox.checked::after {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .buttonsContainer {
+    bottom: 10px;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .button {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .toggleButton, .githubLink {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .checkbox {
+    width: 14px;
+    height: 14px;
+  }
+
+  .checkbox.checked::after {
+    width: 6px;
+    height: 6px;
   }
 }
