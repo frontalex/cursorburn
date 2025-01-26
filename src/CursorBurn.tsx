@@ -59,6 +59,7 @@ const styles = {
     height: '100%',
     position: 'relative' as const,
     overflow: 'hidden',
+    pointerEvents: 'none' as const, // Пропускаем все события мыши
   },
   canvas: {
     cursor: 'none',
