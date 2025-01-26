@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ElasticFire } from './ElasticFire';
+import CursorBurn from './CursorBurn';
 import { MemoryMonitor } from './MemoryMonitor';
 import './App.css';
 
@@ -272,7 +272,7 @@ const App: React.FC = () => {
     <div style={containerStyle}>
       <div style={styles.header}>
         <h1 style={styles.title}>
-          Elastic Fire
+          Cursor Burn
         </h1>
         <p style={styles.subtitle}>
           An interactive particle effect that follows your cursor with smooth, elastic animations.
@@ -293,7 +293,7 @@ const App: React.FC = () => {
       </button>
 
       <a
-        href="https://github.com/yourusername/elastic-fire"
+        href="https://github.com/frontalex/cursorburn"
         target="_blank"
         rel="noopener noreferrer"
         className="githubLink"
@@ -304,7 +304,7 @@ const App: React.FC = () => {
         View on GitHub
       </a>
 
-      <ElasticFire
+      <CursorBurn
         {...currentPresetConfig}
       />
 
