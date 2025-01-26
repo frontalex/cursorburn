@@ -1,7 +1,7 @@
 {
   "name": "cursorburn",
-  "version": "1.0.0",
-  "description": "Interactive canvas animation React component",
+  "version": "1.0.4",
+  "description": "Interactive particle effect that follows cursor with smooth elastic animations for React applications",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -9,6 +9,31 @@
   "files": [
     "dist"
   ],
+  "homepage": "https://frontalex.github.io/cursorburn/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontalex/cursorburn"
+  },
+  "keywords": [
+    "react",
+    "cursor",
+    "effect",
+    "animation",
+    "particles",
+    "fire",
+    "interactive",
+    "canvas",
+    "typescript",
+    "mouse",
+    "pointer",
+    "ui",
+    "component"
+  ],
+  "author": "frontalex",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frontalex/cursorburn/issues"
+  },
   "scripts": {
     "start": "vite",
     "build": "rollup -c",
